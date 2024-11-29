@@ -1,0 +1,815 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Principles and Practice of Database Systems | FlySheep の Blog</title><meta name="author" content="FlySheepZHAO"><meta name="copyright" content="FlySheepZHAO"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="数据库系统课程复习，适用于阿伯丁大学 JC2504 课程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Principles and Practice of Database Systems">
+<meta property="og:url" content="http://example.com/2024/11/17/database/index.html">
+<meta property="og:site_name" content="FlySheep の Blog">
+<meta property="og:description" content="数据库系统课程复习，适用于阿伯丁大学 JC2504 课程">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/splat.png">
+<meta property="article:published_time" content="2024-11-16T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-11-22T12:31:04.124Z">
+<meta property="article:author" content="FlySheepZHAO">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/splat.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Principles and Practice of Database Systems",
+  "url": "http://example.com/2024/11/17/database/",
+  "image": "http://example.com/img/splat.png",
+  "datePublished": "2024-11-16T16:00:00.000Z",
+  "dateModified": "2024-11-22T12:31:04.124Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "FlySheepZHAO",
+      "url": "http://example.com/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/flysheep.png"><link rel="canonical" href="http://example.com/2024/11/17/database/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Principles and Practice of Database Systems',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  isShuoshuo: false
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/seaside.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">FlySheep の Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">Principles and Practice of Database Systems</span></a></span><div id="menus"></div></nav><div id="post-info"><h1 class="post-title">Principles and Practice of Database Systems</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-11-16T16:00:00.000Z" title="发表于 2024-11-17 00:00:00">2024-11-17</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-11-22T12:31:04.124Z" title="更新于 2024-11-22 20:31:04">2024-11-22</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p><strong>数据库系统课程复习，适用于阿伯丁大学 JC2504 课程</strong></p>
+<h1 id="1-Database-database-users"><a href="#1-Database-database-users" class="headerlink" title="1 Database &amp; database users"></a>1 Database &amp; database users</h1><h2 id="1-1-Definitions"><a href="#1-1-Definitions" class="headerlink" title="1.1 Definitions"></a>1.1 Definitions</h2><ul>
+<li>Data: 原始的、未经组织的事实和数字</li>
+<li>Information: 对数据进行了上下文化、分类、计算和浓缩处理之后得到的结果</li>
+<li>Knowledge: 通过经验、洞察力、理解以及将信息放入具体情境中而获得的深入认识</li>
+</ul>
+<p>例如，在一项市场调查中，收集来自问卷调查的原始回复即为“数据”。将这些回复按照年龄段、消费偏好等因素分类并计算出不同群体的购买倾向，则转化为了有用的“信息”。最终，通过分析这些信息并结合行业趋势和历史销售记录等因素来预测未来市场变化或制定营销策略，则达到了更高阶层次的“知识”。</p>
+<h2 id="1-2-What-is-a-database"><a href="#1-2-What-is-a-database" class="headerlink" title="1.2 What is a database"></a>1.2 What is a database</h2><ul>
+<li>Database (DB): 被描述为数据集合或相关数据的存储库</li>
+<li>Database management system (DBMS): 是一种软件，用于管理和控制对数据库的访问。它允许用户创建、查询、更新和管理数据库</li>
+<li>Database application (DA): 指与数据库交互以执行特定任务的程序。例如使用SQL语言编写查询来检索或修改数据</li>
+<li>Database system: “Database system &#x3D; DAs + DBMS + DB”。意味着一个完整的数据库环境包括应用程序、管理系统以及数据本身</li>
+</ul>
+<h2 id="1-3-Four-main-types-of-actions-involve-databases-DCMS"><a href="#1-3-Four-main-types-of-actions-involve-databases-DCMS" class="headerlink" title="1.3  Four main types of actions involve databases (DCMS)"></a>1.3  Four main types of actions involve databases (DCMS)</h2><ul>
+<li>Defining: 它包括必须存储在数据库中的数据的数据类型、结构和约束。数据库描述信息也由DBMS以数据库目录或字典的形式存储;它被称为元数据</li>
+<li>Constructing: 它是将数据存储在由DBMS维护的某种存储介质上的过程</li>
+<li>Manipulating: 它包括使用查询来检索数据库，更新数据库以反映系统的变化，以及从数据生成报告等功能</li>
+<li>Sharing: 允许多个用户和程序同时访问数据库</li>
+</ul>
+<h2 id="1-4-Responsibilities-of-the-database-administrator-and-the-database-designer"><a href="#1-4-Responsibilities-of-the-database-administrator-and-the-database-designer" class="headerlink" title="1.4 Responsibilities of the database administrator and the database designer"></a>1.4 Responsibilities of the database administrator and the database designer</h2><ul>
+<li>Database administer —— work with database software<ul>
+<li>find ways to store, organise and manage data</li>
+<li>keep database up-to-date</li>
+<li>manage database access</li>
+<li>trouble shooting 故障排除</li>
+<li>designing maintenance procedures and putting them into operation 设计维护程序并实施</li>
+</ul>
+</li>
+<li>database designer<ul>
+<li>defining the detailed database design, including tables, indexes, views, constraints, triggers, stored procedures and other database-specific constructs needed to store, retrieve and delete persistent objects 定义详细的数据库设计，包括表、索引、视图、约束、触发器、存储过程以及存储、检索和删除持久对象所需的其他特定于数据库的构造</li>
+</ul>
+</li>
+</ul>
+<h2 id="1-5-Four-main-characteristics-of-the-database-approach"><a href="#1-5-Four-main-characteristics-of-the-database-approach" class="headerlink" title="1.5 Four main characteristics of the database approach"></a>1.5 Four main characteristics of the database approach</h2><ul>
+<li>self-describing nature of a database system 数据库系统自描述性质</li>
+<li>insulation between programs and data 程序与数据之间的绝缘</li>
+<li>data abstraction 数据抽象</li>
+<li>support of multiple views of the data 支持数据的多个视图</li>
+</ul>
+<p>例如，在一个大学数据库中，学生可能只能查看他们自己课程和成绩相关信息（支持多重视图），而不需要关心后台如何处理或存储这些信息（程序与数据隔离）。同时，所有课程和成绩信息被保存在统一格式下（自描述本质），且学生通过网页或应用访问时所见是经过优化处理显示给最终用户（比如表格形式）的结果，隐藏了复杂查询过程（数据抽象）</p>
+<h1 id="2-SQL"><a href="#2-SQL" class="headerlink" title="2 SQL"></a>2 SQL</h1><h2 id="2-1-SQL-Structured-Query-Language"><a href="#2-1-SQL-Structured-Query-Language" class="headerlink" title="2.1 SQL - Structured Query Language"></a>2.1 SQL - Structured Query Language</h2><ul>
+<li>Structured programming?</li>
+</ul>
+<p>- NO! - Structured English (from ‘SEQUEL’)</p>
+<ul>
+<li>It’s a declarative language - says what, not how</li>
+<li>It’s an abstract &amp; portable interface to RDBMSs 抽象和可移植接口</li>
+</ul>
+<p>例如，如果你想从一个名为“employees”的表中检索所有员工信息，你可以使用如下SQL命令： <code>sql SELECT * FROM employees; </code> 这条命令会返回该表中所有员工的记录，并且无论底层数据库管理系统是Oracle、MySQL还是其他系统，这条命令基本上都保持不变。因此，“抽象且可移植”在这里意味着SQL为用户隐藏了与特定数据库交互所需处理的复杂性和差异性。</p>
+<ul>
+<li>SQL uses English keywords &amp; user-defined names</li>
+<li><em>SELECT</em> belongs to DML</li>
+<li><em>SELECT</em> retrieves &amp; displays data from the database 检索和显示</li>
+</ul>
+<h2 id="2-2-SQL-Components-DDL-DCL-DML"><a href="#2-2-SQL-Components-DDL-DCL-DML" class="headerlink" title="2.2 SQL Components: DDL, DCL &amp; DML"></a>2.2 SQL Components: DDL, DCL &amp; DML</h2><p>Three main categorues (or sub-languages) of SQL:</p>
+<ul>
+<li>Data definition language (DDL) for creating a DB:</li>
+</ul>
+<p>- e.g., <em>CREATE</em>, <em>DROP</em>, <em>ALTER</em></p>
+<ul>
+<li>Data control language (DCL) for administering a DB:</li>
+</ul>
+<p>- e.g., <em>GRANT</em>, <em>DENY</em>, <em>USE</em></p>
+<ul>
+<li>Data manipulating language (DML) to access a DB:</li>
+</ul>
+<p>- e.g., <em>SELECT</em>, <em>INSERT</em>, <em>UPDATE</em>, <em>DELETE</em></p>
+<h2 id="2-3-SQL-Aggregate-Functions-聚合函数"><a href="#2-3-SQL-Aggregate-Functions-聚合函数" class="headerlink" title="2.3 SQL Aggregate Functions 聚合函数"></a>2.3 SQL Aggregate Functions 聚合函数</h2><ul>
+<li>we do not want to just reterive data 我们不止想要检索数据</li>
+<li>we also want to summarise data 我们同样也想总结数据</li>
+<li>aggregate functions compute summarization (or aggregation) of data 聚合函数帮我们计算数据的汇总（或聚合）</li>
+</ul>
+<p>Aggregate Functions:</p>
+<h2 id="2-4-Set-Operations-in-SQL-集合操作"><a href="#2-4-Set-Operations-in-SQL-集合操作" class="headerlink" title="2.4 Set Operations in SQL 集合操作"></a>2.4 Set Operations in SQL 集合操作</h2><ul>
+<li><p>Syntax</p>
+<ul>
+<li><em>(SELECT …) UNION (SELECT …)</em></li>
+<li><em>(SELECT …) INTERSECT (SELECT …)</em></li>
+<li><em>(SELECT …) EXCEPT (SELECT …)</em></li>
+</ul>
+</li>
+<li><p>Some DBMSs use <em>MINUS</em> instead of <em>EXCEPT</em></p>
+</li>
+<li><p>For set operations, the tables must be union-compatible 对于集合操作，表必须是联合兼容的</p>
+<ul>
+<li>i.e., 拥有相同数量和类型的列</li>
+</ul>
+</li>
+</ul>
+<h2 id="2-5-Q-Three-differences-between-a-database-schema-and-a-database-state"><a href="#2-5-Q-Three-differences-between-a-database-schema-and-a-database-state" class="headerlink" title="2.5(Q) Three differences between a database schema and a database state"></a>2.5(Q) Three differences between a database schema and a database state</h2><ul>
+<li>A database schema represents the overall design of the database. In contrast, the database state represents the current state of data in the database.</li>
+</ul>
+<p>database schema 表示数据库的总体设计，相反，database stata 表示数据库中数据的当前状态</p>
+<ul>
+<li>The database schema is changed occasionally. In contrast, the database state is changed frequently.</li>
+</ul>
+<p>database schema 偶尔更改，相反，database stata 经常更改</p>
+<ul>
+<li>Initially when defining a database, only the database schema is specified. The database state is the empty state when the database is defined.</li>
+</ul>
+<p>最初定义数据库时，只明确 database schema，而 database state 是定义数据库时的空状态</p>
+<p><img src="/images/database_images/202411172034136.png" alt="image-20241117203455066"></p>
+<p><img src="/images/database_images/202411172035039.png" alt="image-20241117203506004"></p>
+<h2 id="2-6-Q-The-reasons-for-logical-data-independence-is-harder-to-achieve-compared-to-physical-data-independence-逻辑数据独立性比物理数据独立性更难实现的原因"><a href="#2-6-Q-The-reasons-for-logical-data-independence-is-harder-to-achieve-compared-to-physical-data-independence-逻辑数据独立性比物理数据独立性更难实现的原因" class="headerlink" title="2.6(Q) The reasons for logical data independence is harder to achieve compared to physical data independence 逻辑数据独立性比物理数据独立性更难实现的原因"></a>2.6(Q) The reasons for logical data independence is harder to achieve compared to physical data independence 逻辑数据独立性比物理数据独立性更难实现的原因</h2><ul>
+<li>Logical data independence is harder to achieve as the application programs are heavily dependent on the logical format of the data they access</li>
+</ul>
+<p>应用程序严重依赖它们访问的数据的逻辑格式</p>
+<ul>
+<li>Hence, a change at the conceptual level might require changing the entire program application</li>
+</ul>
+<p>概念层面上做出改变可能需要修改整个程序应用</p>
+<ul>
+<li>When it comes to physical data independence, a change in the location of the database or modifying the file organisation or use of new storage devices will not require change at the higher logical levels</li>
+</ul>
+<p>在物理数据独立性方面，改变数据库位置或修改文件组织结构、使用新的存储设备，并不会要求在更高的逻辑层次上进行改变</p>
+<p>解释与例子：</p>
+<ul>
+<li>逻辑数据独立性指在不改变应用程序的情况下能够更改数据库中表和字段（即数据模型）<ul>
+<li>例如，一个账单系统软件依赖特定格式来读取用户信息；如果把“全名”一栏拆成“姓”和“名”，可能需要对软件代码进行大量修改</li>
+</ul>
+</li>
+<li>物理数据独立性是指在不影响到数据库在概念或者视图层面时可以更换底层存储设施或者文件系统<ul>
+<li>比如说，将数据库从硬盘迁移到SSD存储器，并不需要对查询语句等代码作出任何调整</li>
+</ul>
+</li>
+</ul>
+<h1 id="3-Relational-Model-（逻辑数据模型）"><a href="#3-Relational-Model-（逻辑数据模型）" class="headerlink" title="3 Relational Model （逻辑数据模型）"></a>3 Relational Model （逻辑数据模型）</h1><h2 id="3-1-Database-Design"><a href="#3-1-Database-Design" class="headerlink" title="3.1 Database Design"></a>3.1 Database Design</h2><ul>
+<li>Process of fitting a database solution to client’s requirements 使数据库解决方案符合用户的要求</li>
+<li>Client’s requirements will never be mathematically ‘crisp’ 客户的要求永远不可能在数学上“清晰”</li>
+<li>So, not possible to fit a unique solution mathematically  所以不可能只有一种独特的解决方案</li>
+<li>Our approach<ul>
+<li>use semi-formal methods to arrive at an initial design 使用半形式化方法达到初步设计</li>
+<li>use iterative(迭代) refinement(优化) to improve the design 使用迭代优化来改进设计</li>
+</ul>
+</li>
+<li>Design process is subjective and creative 一千个人有一千个哈姆雷特</li>
+</ul>
+<h2 id="3-2-Phases-of-database-design"><a href="#3-2-Phases-of-database-design" class="headerlink" title="3.2 Phases of database design"></a>3.2 Phases of database design</h2><ul>
+<li>DB design achieved in three phases:<ul>
+<li>Conceptual</li>
+<li>Logical</li>
+<li>Physical</li>
+</ul>
+</li>
+<li>在简单的领域，我们可能不会使用三层面方法</li>
+</ul>
+<h2 id="3-3-ER-Modelling-（概念数据模型）"><a href="#3-3-ER-Modelling-（概念数据模型）" class="headerlink" title="3.3 ER Modelling （概念数据模型）"></a>3.3 ER Modelling （概念数据模型）</h2><ul>
+<li>models a domian of discourse</li>
+<li>central ideas<ul>
+<li>domians are made up of entities</li>
+<li>relationships link associated Entities</li>
+<li>Entities and relationships have properties called attributes 实体和关系有被称为“属性”的组成部分</li>
+<li>Certain attributes are special, call them primary keys and alternate keys</li>
+<li>Need integrity constraints to preserve domain consistency</li>
+<li>Deliverables 可交付成果<ul>
+<li>ER Models - documented diagrammatically</li>
+<li>Data dictionary</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="/images/database_images/202411172038502.png" alt="image-20241117203853449"></p>
+<p><img src="/images/database_images/202411172039002.png" alt="image-20241117203901950"></p>
+<ul>
+<li>Documentation is an important component of ER modelling</li>
+</ul>
+<h2 id="3-4-Q-The-difference-between-an-attribute-and-a-value-set"><a href="#3-4-Q-The-difference-between-an-attribute-and-a-value-set" class="headerlink" title="3.4(Q) The difference between an attribute and a value set"></a>3.4(Q) The difference between an attribute and a value set</h2><ul>
+<li>Attributes describe the instances in the row of a database 属性描述数据库行中的实例<ul>
+<li>e.s.,  attributes in an invoice can be price, invoice number and date</li>
+</ul>
+</li>
+<li>A value set specifies the set of values that may be assigned to that attribute for each individual entity 一个值集指定了一组值，这些值可以分配给每个单独实体的属性</li>
+</ul>
+<h1 id="4-Enhanced-Entity-Relationship-Model-EER"><a href="#4-Enhanced-Entity-Relationship-Model-EER" class="headerlink" title="4 Enhanced Entity-Relationship Model (EER)"></a>4 Enhanced Entity-Relationship Model (EER)</h1><h2 id="4-1-Structural-Constraints-结构约束"><a href="#4-1-Structural-Constraints-结构约束" class="headerlink" title="4.1 Structural Constraints 结构约束"></a>4.1 Structural Constraints 结构约束</h2><p>Three types of binary relations</p>
+<ul>
+<li>one-to-one – 1:1</li>
+<li>one-to-many – 1:*</li>
+<li>many-to-many – <em>:</em></li>
+</ul>
+<h2 id="4-2-EER-Modeling"><a href="#4-2-EER-Modeling" class="headerlink" title="4.2 EER Modeling"></a>4.2 EER Modeling</h2><ul>
+<li>ER modelling does not capture all the semantics of client’s domain, such as<ul>
+<li>‘ISA’</li>
+<li>‘HASA’</li>
+</ul>
+</li>
+<li>Enhanced ERmodels represent the above relationships</li>
+</ul>
+<h2 id="4-3-Step-by-Step-Procedure-for-Conceptual-design"><a href="#4-3-Step-by-Step-Procedure-for-Conceptual-design" class="headerlink" title="4.3 Step-by-Step Procedure for Conceptual design"></a>4.3 Step-by-Step Procedure for Conceptual design</h2><ul>
+<li>Identify entity types 识别实体类型</li>
+<li>Identify relationship types 确定关系类型</li>
+<li>Identify and associate attributes with entity or relationship types 识别属性并将其与实体或关系类型相关联</li>
+<li>Determine attribute domains 确定属性域</li>
+<li>Determine candidate, primary and alternate key attributes 确定候选、主键和备用键属性</li>
+<li>Consider use of enhanced modelling concepts (optional) 考虑使用EER（可选）</li>
+<li>Check model for redundancy 检查模型冗余</li>
+<li>Validate conceptual model against user transactions 根据用户事务验证概念模型</li>
+<li>Review conceptual data model with user 与用户一起回顾概念数据模型</li>
+</ul>
+<h2 id="4-4-Q-Brief-explantation-on-an-ontology-and-a-database-schema-and-discuss-one-similarity-between-the-two-简短介绍本体与-database-schema，并且讨论相似之处"><a href="#4-4-Q-Brief-explantation-on-an-ontology-and-a-database-schema-and-discuss-one-similarity-between-the-two-简短介绍本体与-database-schema，并且讨论相似之处" class="headerlink" title="4.4(Q) Brief explantation on an ontology and a database schema, and discuss one similarity between the two 简短介绍本体与 database schema，并且讨论相似之处"></a>4.4(Q) Brief explantation on an ontology and a database schema, and discuss one similarity between the two 简短介绍本体与 database schema，并且讨论相似之处</h2><p>Anontology:</p>
+<ul>
+<li>Anontology is a model that clarifies and specifies a set of meanings in a formal language. 本体是一种用形式语言阐明和指定一组意义的模型</li>
+<li>Those meanings reflect the ontologist’s understanding of the target subject matter, regarding the kinds of things there are and how those things are related to each other. 这些意义反映了本体论者对目标主体的理解，关于存在的事物种类以及这些事物如何相互关联</li>
+</ul>
+<p><img src="/images/database_images/202411172040948.png" alt="image-20241117204033906"></p>
+<p><img src="/images/database_images/202411172040772.png" alt="image-20241117204046730"></p>
+<p>Database schema:</p>
+<ul>
+<li>A database schema defines the structure of a database in a formal language. 数据库模式用一种形式语言定义数据库的结构</li>
+<li>There are three kinds of database schemas: conceptual, logical and physical. 有三种数据库模式：概念模式、逻辑模式和物理模式</li>
+</ul>
+<p>Similarity:</p>
+<ul>
+<li>At the conceptual level, both consist of set of type definitions expressed in a formal notation. 在概念级别上，两者都有一组用形式化符号表示的类型定义</li>
+</ul>
+<h1 id="5-Normalisation"><a href="#5-Normalisation" class="headerlink" title="5 Normalisation"></a>5 Normalisation</h1><h2 id="5-1-Data-Redundancy"><a href="#5-1-Data-Redundancy" class="headerlink" title="5.1 Data Redundancy"></a>5.1 Data Redundancy</h2><ul>
+<li>Major aim of relational database design is<ul>
+<li>to group attributes into relations to minimize data redundancy 将属性分组到关系中以减少数据冗余</li>
+<li>to reduce file storage space required by base relations 减少基本关系所需的文件存储空间</li>
+</ul>
+</li>
+<li>Data redundancy is undesirable because of the following anomalies 由于以下异常情况，数据冗余不可取<ul>
+<li>‘Insert’ anomalies 插入异常</li>
+<li>‘Delete’ anomalies 删除异常</li>
+<li>‘Update’ anomalies 更新异常</li>
+</ul>
+</li>
+</ul>
+<p>如果数据的插入、更新、删除操作不完整或不正确，就会产生数据冗余和异常，例如在插入一个新订单时，没有同时插入相关的订单明细，导致订单信息不完整或不准确。如果缺乏有效的数据约束和完整性检查机制，也会导致数据冗余和异常，例如没有设置外键约束，导致存在无效的关联数据。因此，在设计数据库时，需要考虑数据的完整性和一致性，采用合适的数据约束和完整性检查机制，避免数据冗余和异常的产生。</p>
+<p><img src="/images/database_images/202411172041128.png" alt="image-20241117204148073"></p>
+<h2 id="5-2-The-reasons-of-why-the-insertion-deletion-and-modification-anomalies-are-considered-bad"><a href="#5-2-The-reasons-of-why-the-insertion-deletion-and-modification-anomalies-are-considered-bad" class="headerlink" title="5.2 The reasons of why the insertion, deletion, and modification anomalies are considered bad"></a>5.2 The reasons of why the insertion, deletion, and modification anomalies are considered bad</h2><ul>
+<li>Anomalies are considered to be bad in the sense that they create dirty data that would be incomplete and inconsistent. 因为它们会产生不完整和不一致的脏数据</li>
+<li>Moreover, improper insertion, deletion, or update operations will violate the integrity properties. 此外，不当的插入、删除、或更新操作将违反完整性属性</li>
+<li>Thus, the entire database would be inconsistent. 因此，整个数据库将是不一致的</li>
+</ul>
+<h2 id="5-3-The-Process-of-Normalization"><a href="#5-3-The-Process-of-Normalization" class="headerlink" title="5.3 The Process of Normalization"></a>5.3 The Process of Normalization</h2><ul>
+<li>规范化依赖于主键和函数依赖性来分析关系。</li>
+<li>它通常作为一系列步骤执行，每个步骤对应一个特定的正规形式。</li>
+<li>随着规范化进程推进，关系在格式上变得更加严格，并且对更新异常也更不敏感。</li>
+<li>要找出当前所使用的正规形式，并据此执行转换：<ul>
+<li>确认现有模型属于哪个正则形态</li>
+<li>将关系转换到下一个高级正则形态，通过分解使其结构简单化</li>
+<li>如果需要，可能还需进一步精炼关系以消除由分解导致的不良影响。</li>
+</ul>
+</li>
+</ul>
+<p>e.x., 在第一阶段（第一范式1NF），确保所有字段都是原子性质</p>
+<p>接着如果满足第二阶段（第二范式2NF），就要去除部分函数依赖</p>
+<p>然后再看是否能达到第三阶段（第三范式3NF），即移除传递函数依赖等</p>
+<h2 id="5-4-有关规范化的一个完整例子："><a href="#5-4-有关规范化的一个完整例子：" class="headerlink" title="5.4 有关规范化的一个完整例子："></a>5.4 有关规范化的一个完整例子：</h2><p>当前存在一个关系模式：SCD(Sno，Sname，Ssex，Sdept，Sdean，Cno，Cname，Grade)，其中，SCD表示学生关系，对应的各属性依次为学号、姓名、性别、院系、系主任、课程号、课程名称和成绩。关系的主码为(Sno,Cno)。</p>
+<p><img src="/images/database_images/202411172042024.png" alt="image-20241117204236903"></p>
+<p><strong>分析数据依赖</strong></p>
+<p>现在我们建立一个描述学校教务的数据库，该数据库涉及的对象包括学生的：</p>
+<ul>
+<li>学号（Sno)</li>
+<li>所在系（Sdept)</li>
+<li>系主任姓名(Mname)</li>
+<li>课程名(Cname)</li>
+<li>成绩（Grade)</li>
+</ul>
+<p>假设我们用一个单一的关系模式Student来表示，则该关系模式的属性集为: U &#x3D;{ Sno，Sdept，Mname，Cname, Grade }</p>
+<p>现实世界的已知事实（语义）告诉我们:</p>
+<ul>
+<li>一个系有若干学生，但一个学生只属于一个系。</li>
+<li>一个系只有一名主任。</li>
+<li>一个学生可以选修多门课程，每门课程有若干学生选修。</li>
+<li>每个学生所学的每门课程都有一个成绩。</li>
+</ul>
+<p>从上述事实我们可以得到属性集U上的一组函数依赖F：F &#x3D; { Sno→Sdept, Sdept→ Mname, (Sno，Cname)→Grade } 。即：学号决定所在系，所在系决定系主任名，学号和课程决定成绩。</p>
+<p><img src="/images/database_images/202411172042219.png" alt="image-20241117204251171"></p>
+<p><strong>函数依赖的定义:</strong></p>
+<p>设关系模式R(U，F)，U是属性全集，F是U上的函数依赖集，X和Y是U的子集，如果对于R(U)的任意一个可能的关系r，对于X的每一个具体值，Y都有唯一的具体值与之对应，则称X决定函数Y，或Y函数依赖于X，记作X→Y。我们称X为决定因素，Y为依赖因素。当Y不函数依赖于X时，记作:x-&#x2F;-&gt;Y。当X→Y且Y→X时，则记作:X&lt;–&gt;Y。</p>
+<p>​	<strong>1. 非平凡函数依赖与平凡函数依赖</strong></p>
+<p>​		在关系模式R(U)中，对于U的子集X和Y</p>
+<p>​		如果X→Y，但Y不属于X，则称X→Y是非平凡的函数依赖</p>
+<p>​		若X→Y，但Y 属于X，则称X→Y是平凡的函数依赖</p>
+<p>​	在关系模式SC(Sno, Cno, Grade)中，(Sno, Cno)→ Grade，学号和课程决定成绩，但是成绩不属于学号或课程，则为非平凡的函数依赖。</p>
+<p>​	(SnO，CNO)→CNO，学号和课程可以决定学号，学号也属于学号和课程，则为平凡的函数依赖，对于任一关系模式，平凡函数依赖都是必然成立的,它不反映新因此若不特别声明,我们总是讨论非平凡函数依赖。</p>
+<p>​	<strong>2. 完全函数依赖与部分函数依赖</strong></p>
+<p>​	设关系模式R(U)，U是属性全集，X和Y是U的子集，如果X→Y，并且对于X的任何一个真子集X’，都有X’-\ -&gt;Y，则称Y对X完全函数依赖(Full Functional Dependency ) ，记作X-f&gt;Y。</p>
+<p>​	如果对X的某个真子集X’，有X’→Y，则称Y对X部分函数依赖(Partial Functional Dependency ) ，记作X-p-&gt;Y。</p>
+<p>​	由定义知：</p>
+<p>​		只有当决定因素是组合属性时，讨论部分函数依赖才有意义</p>
+<p>​		当决定因素是单属性时，只能是完全函数依赖</p>
+<p>​	<strong>3. 传递函数依赖和直接函数依赖</strong></p>
+<p>​		如果X-&gt;Y，Y-&gt;Z, 这时称Z对X传递函数依赖</p>
+<p>​		如果Y→X，则X&lt;–&gt;Y，这时称Z对X直接函数依赖，而不是传递函数依赖</p>
+<p><strong>范式：</strong></p>
+<p><img src="/images/database_images/202411172043974.png" alt="image-20241117204347914"></p>
+<p>​	<strong>第一范式(First Normal Form)</strong></p>
+<p>​		第一范式是最基本的规范形式，即关系中每个属性都是不可再分的简单项。但是满足第一范式的关系模式并不一定是一个好的关系模式。</p>
+<p>​		如果关系模式R,其所有的属性均为简单属性，即每个属性都城是不可再分的，则称R属于第一范式,简称1NF，记作R ∈1NF。</p>
+<p>​	<strong>第二范式(Second Normal Form)</strong></p>
+<p>​		如果关系模式R∈ 1NF，且每个非主属性都完全函数依赖于R的每个关系键，则称R属于第二范式 ，简称2NF，记作R∈ 2NF。</p>
+<p>​		在关系模式SCD中，SNO，CNO为主属性，AGE，DEPT，MN，MN，SCORE均为非主属性，经上述分析，存在非主属性对关系键的部分函数依赖，所以SCD不属于2NF。</p>
+<p><img src="/images/database_images/202411172044032.png" alt="image-20241117204402901"></p>
+<p>​	<strong>第三范式（3rd Normal Form）</strong></p>
+<p>​		在以下情况下，表为第三范式：</p>
+<p>​			它是第二范式</p>
+<p>​			它不包含传递依赖项（非键属性通过另一个非键属性依赖于主键）</p>
+<p>​		对于大多数表，第三范式通常就足够了，因为它避免了最常见的一种数据异常。建议您在实现之前将使用的大多数表转换为第三范式，因为在大多数情况下，这将实现数据库归一化概述中列出的归一化目标。</p>
+<h2 id="5-5-Q-The-problem-of-spurious-and-how-to-prevent-it-伪元组的问题与如何避免"><a href="#5-5-Q-The-problem-of-spurious-and-how-to-prevent-it-伪元组的问题与如何避免" class="headerlink" title="5.5(Q) The problem of spurious and how to prevent it 伪元组的问题与如何避免"></a>5.5(Q) The problem of spurious and how to prevent it 伪元组的问题与如何避免</h2><ul>
+<li>A spurious tuple is mainly a record in a database that gets created while two tables are joined badly.</li>
+</ul>
+<p>伪元组主要是数据库两张连接不好的表产生的</p>
+<ul>
+<li>In a database, spurious tuples are formed while two tables are joined on attributes which are neither primary nor foreign keys.</li>
+</ul>
+<p>在数据库中，当两个表连接在既不是主键也不是外键的属性上时，会形成虚假的元组</p>
+<ul>
+<li>To prevent spurious tuples, avoid joining relations that consist of matching attributes that are not primary or foreign key combinations as joining on such attributes may generate spurious tuples.</li>
+</ul>
+<p>为了防止虚假的元组，避免有非主键或外键组合的匹配属性组成的连接关系</p>
+<h2 id="5-6-Q-The-reasons-for-NULLs-in-a-relation-be-avioded-as-much-as-possible"><a href="#5-6-Q-The-reasons-for-NULLs-in-a-relation-be-avioded-as-much-as-possible" class="headerlink" title="5.6(Q) The reasons for NULLs in a relation be avioded as much as possible"></a>5.6(Q) The reasons for NULLs in a relation be avioded as much as possible</h2><ul>
+<li>NULLs should be avoided to avoid complexity in SELECT and UPDATE queries</li>
+</ul>
+<p>为了避免 SELECT 和 UPDATE 的复杂度</p>
+<ul>
+<li>Furthermore, columns which have constraints like primary or foreign key constraints cannot contain a NULL value.</li>
+</ul>
+<p>此外，具有主键约束和外键约束的列不能包含NULL值</p>
+<h1 id="6-Access-Control"><a href="#6-Access-Control" class="headerlink" title="6 Access Control"></a>6 Access Control</h1><h2 id="6-1-The-Importance-of-Views-Privileges"><a href="#6-1-The-Importance-of-Views-Privileges" class="headerlink" title="6.1 The Importance of Views &amp; Privileges"></a>6.1 The Importance of Views &amp; Privileges</h2><ul>
+<li>Inlarge organisations, DBMSs are used by a range of staff:<ul>
+<li>directors, managers, analysts, engineers, personnel, secretarial, etc.</li>
+</ul>
+</li>
+<li>Consequently, access to data in different tables may need to be controlled to:<ul>
+<li>provide access to authorised users 向授权用户提供访问权限</li>
+<li>restrict access to unauthorised users 限制未授权用户访问</li>
+<li>enforce business rules or government regulations 执行业务规则或政府法规</li>
+</ul>
+</li>
+<li>Views &amp; privileges can help implement access control…</li>
+</ul>
+<h2 id="6-2-The-meant-of-granting-and-revoking-a-priviledge"><a href="#6-2-The-meant-of-granting-and-revoking-a-priviledge" class="headerlink" title="6.2 The meant of granting and revoking a priviledge"></a>6.2 The meant of granting and revoking a priviledge</h2><ul>
+<li>Granting and revoking privileges is a task that you would perform when you want to allow or disallow users of the database to be able to reference data within the database as part of a security practice.</li>
+</ul>
+<p>作为安全实践的一部分，当您希望允许或不允许数据库的用户能够引用数据库中的数据时，可以执行授予和撤销特权的任务。</p>
+<ul>
+<li>The GRANT privilege statement grants privileges on the database as a whole or on individual tables, views, sequences or procedures.</li>
+</ul>
+<p>GRANT特权语句授予对整个数据库或单个表、视图、序列或过程的权限。</p>
+<ul>
+<li>It controls access to database objects, roles and DBMS resources.</li>
+</ul>
+<p>它控制对数据库对象、角色和DBMS资源的访问。</p>
+<ul>
+<li>The REVOKE statement revokes privileges. It removes database privileges or role access granted to the specified users, groups, role or PUBLIC.</li>
+</ul>
+<p>REVOKE语句撤销特权。它删除授予指定用户、组、角色或PUBLIC的数据库特权或角色访问权限。</p>
+<ul>
+<li>You cannot revoke privileges granted by other users.</li>
+</ul>
+<p>你不能撤销其他用户授予的权限。</p>
+<h2 id="6-3-SQL’s-Access-Control-Model"><a href="#6-3-SQL’s-Access-Control-Model" class="headerlink" title="6.3 SQL’s Access Control Model"></a>6.3 SQL’s Access Control Model</h2><ul>
+<li>Access Control in SQL is similar to multi-user operating systems (e.g., Unix, Windows, …).  SQL 的访问控制类似于多用户操作系统</li>
+<li>A user supplies an Authorisation Id and password to the DBMS. 用户向 DBMS 提供授权 ID 与密码</li>
+<li>The DBMS opensasession for the user. DBMS 为用户打开一个通话</li>
+<li>The DBMS runs SQL statements on behalf of the user. DBMS 代表用户运行 SQL 语句</li>
+<li>The user becomes the owner of any objects they create. 用户成为他们创造的任何对象的所有者</li>
+<li>Bydefault, only the owner may access their objects. 默认情况下，只有所有者可以访问他们的对象</li>
+<li>Theowner maygrant andrevoke access privileges to other users. 所有者可以授予和撤销其他用户的访问权限</li>
+</ul>
+<h2 id="6-4-Q-The-difference-between-discretionary-and-mandatory-access-control-自由裁量访问控制和强制访问控制的区别"><a href="#6-4-Q-The-difference-between-discretionary-and-mandatory-access-control-自由裁量访问控制和强制访问控制的区别" class="headerlink" title="6.4(Q) The difference between discretionary and mandatory access control 自由裁量访问控制和强制访问控制的区别"></a>6.4(Q) The difference between discretionary and mandatory access control 自由裁量访问控制和强制访问控制的区别</h2><ul>
+<li>In mandatory access control, the system and not the users, determines which subjects can access specific data objects.</li>
+</ul>
+<p>在强制访问控制中，是系统不是用户决定了哪些主体可以访问特定的对象</p>
+<ul>
+<li>Discretionary access control is different from mandatory access control because the owner of the data object specifies which subjects can access the data object.</li>
+</ul>
+<p>在自由裁量访问控制中，是数据对象所有者决定哪些主体可以访问数据对象</p>
+<h2 id="6-5-Q-The-meant-of-row-level-access-control"><a href="#6-5-Q-The-meant-of-row-level-access-control" class="headerlink" title="6.5(Q) The meant of row-level access control"></a>6.5(Q) The meant of row-level access control</h2><ul>
+<li>Row level access control refers to the practice of controlling access to data in a database by row, so that users are only able to access the data they are authorized for. 行级访问控制是指按行控制对数据库中数据的访问，以便用户只能访问他们被授权的数据</li>
+<li>This contrasts with database-level or table-level access control, which controls access to entire databases or tables, respectively. 这与数据库级或表级访问控制形成对比，后者分别控制对整个数据库或表的访问</li>
+</ul>
+<h1 id="7-Transaction-Management"><a href="#7-Transaction-Management" class="headerlink" title="7 Transaction Management"></a>7 Transaction Management</h1><h2 id="7-1-Transaction-Management-Overview"><a href="#7-1-Transaction-Management-Overview" class="headerlink" title="7.1 Transaction Management Overview"></a>7.1 Transaction Management Overview</h2><ul>
+<li>Objective<ul>
+<li>schedule queries from multiple simultaneous users efficiently 高效的调度来自多个用户的查询</li>
+<li>keep the database in a consistent state 保持数据库处于一致状态</li>
+</ul>
+</li>
+<li>Transaction management involves<ul>
+<li>performing “logical units of work” (definition of transactions) 执行逻辑工作单元</li>
+<li>controlling concurrency – stop user tasks interfering 控制并发</li>
+<li>resolving conflicts – e.g., simultaneous update attempts 解决冲突</li>
+<li>recovering from errors – restore DB to consistent state 从错误中恢复</li>
+</ul>
+</li>
+</ul>
+<h2 id="7-2-The-“ACID”-Requirements-For-a-Transaction"><a href="#7-2-The-“ACID”-Requirements-For-a-Transaction" class="headerlink" title="7.2 The “ACID” Requirements For a Transaction"></a>7.2 The “ACID” Requirements For a Transaction</h2><ul>
+<li>Atomicity – each unit of work is indivisible; “all-or-nothing” (transactions that don’t complete must be undone or “rolled-back”)</li>
+<li>Consistency – a transaction transforms the database from one consistent state into another (intermediates may be inconsistent)</li>
+<li>Isolation – each transaction effectively executes independently – one transaction should not see the inconsistent&#x2F;incomplete state of another transaction</li>
+<li>Durability – once a transaction is complete, its effects cannot be undone or lost (it can only be “undone” with a compensating transaction)</li>
+</ul>
+<h2 id="7-3-Q-Discuss-the-atomicity-durability-isolation-and-consistency-preservation-properties-of-a-database-transaction"><a href="#7-3-Q-Discuss-the-atomicity-durability-isolation-and-consistency-preservation-properties-of-a-database-transaction" class="headerlink" title="7.3(Q)  Discuss the atomicity, durability, isolation, and consistency preservation properties of a database transaction."></a>7.3(Q)  Discuss the atomicity, durability, isolation, and consistency preservation properties of a database transaction.</h2><ul>
+<li>Atomicity is a property that ensures that a database follows the all or nothing rule. In other words, the database considers all transaction operations as one whole unit or atom.</li>
+<li>Consistency is a property ensuring that only valid data following all rules and constraints is written in the database. When a transaction results in invalid data, the database reverts to its previous state, which abides by all customary rules and constraints.</li>
+<li>Isolation is a property that guarantees the individuality of each transaction, and prevents them from being affected from other transactions. It ensures that transactions are securely and independently processed at the same time without interference, but it does not ensure the order of transactions.</li>
+<li>Durability is a property that enforces completed transactions, guaranteeing that once each one of them has been committed, it will remain in the system even in case of subsequent failures. These failures include transaction failures and catastrophic failures.</li>
+</ul>
+<h2 id="7-4-Concurrent-Transections-The-Lost-Update-Problem"><a href="#7-4-Concurrent-Transections-The-Lost-Update-Problem" class="headerlink" title="7.4 Concurrent Transections - The Lost Update Problem"></a>7.4 Concurrent Transections - The Lost Update Problem</h2><ul>
+<li>Suppose anaccount holds £100. If T1 deposits £100 and T2 withdraws £10, the new balance should be £190. With concurrent transactions, we could get:<ul>
+<li>T1: UPDATE Account SET Balance &#x3D; Balance + 100;</li>
+<li>T2: UPDATEAccount SET Balance &#x3D; Balance - 10;</li>
+</ul>
+</li>
+</ul>
+<h2 id="7-5-Serialising-Transactions-连载事物"><a href="#7-5-Serialising-Transactions-连载事物" class="headerlink" title="7.5 Serialising Transactions 连载事物"></a>7.5 Serialising Transactions 连载事物</h2><ul>
+<li>One solution would be to serialise all transactions:<ul>
+<li>make first transaction finish before next one starts</li>
+</ul>
+</li>
+<li>However, this would not be efficient on multi-user systems</li>
+<li>A non-serial schedule interleaves operations from a set of concurrent transactions 非串行调度将来自一组的并发事务操作穿插在一起<ul>
+<li>should produce the same results as some serial schedule</li>
+</ul>
+</li>
+<li>Only need to schedule transactions<ul>
+<li>that refer to the same data items and perform a mixture of writes and reads 它们引用相同的数据项，并混合执行写和读操作</li>
+<li>some transactions might benefit from running simultaneously (e.g., if they both read the same tables) 有些事务可能会从同时运行中受益（例如，如果它们都读取相同的表）</li>
+</ul>
+</li>
+</ul>
+<h2 id="7-6-Q-What-is-a-serial-schedule-What-is-a-serialisable-schedule-Why-is-a-serial-schedule-considered-correct-Why-is-a-serialisable-schedule-considered-correct"><a href="#7-6-Q-What-is-a-serial-schedule-What-is-a-serialisable-schedule-Why-is-a-serial-schedule-considered-correct-Why-is-a-serialisable-schedule-considered-correct" class="headerlink" title="7.6(Q) What is a serial schedule? What is a serialisable schedule? Why is a serial schedule considered correct? Why is a serialisable schedule considered correct?"></a>7.6(Q) What is a serial schedule? What is a serialisable schedule? Why is a serial schedule considered correct? Why is a serialisable schedule considered correct?</h2><ul>
+<li><ul>
+<li>Aserial schedule is a type of schedule where one transaction is executed completely before starting another transaction. 串行调度是一种调度类型，其中开始另一个事务之前一个事物会被完全执行</li>
+<li>A serial schedule always gives the correct result. Consider two transactions T1 and T2 which perform some operations. If it has no interleaving of operations, then there are two possible outcomes: either execute all of T1 operations, which were followed by T2 operations. 连续进度表总是给出正确的结果。考虑两个执行一些操作的事物T1和T2，如果它没有交错的操作，那么有两种可能的结果：执行所有的T1操作，然后是T2操作</li>
+</ul>
+</li>
+<li></li>
+</ul>
+<h2 id="7-7-Q-Discuss-the-actions-taken-by-the-read-item-modify-item-and-write-item-operations-on-adatabase"><a href="#7-7-Q-Discuss-the-actions-taken-by-the-read-item-modify-item-and-write-item-operations-on-adatabase" class="headerlink" title="7.7(Q) Discuss the actions taken by the read item, modify item and write item operations on adatabase"></a>7.7(Q) Discuss the actions taken by the read item, modify item and write item operations on adatabase</h2><ul>
+<li>The read_item operation reads a data item from storage to main memory</li>
+<li>The modify_item operation changes the value of item in the main memory</li>
+<li>The write_item operation writes the modified value from memory to storage</li>
+</ul>
+<h2 id="7-8-Q-Define-the-violations-caused-by-each-of-the-following-a-dirty-read-and-b-phantoms-脏读取-幻象"><a href="#7-8-Q-Define-the-violations-caused-by-each-of-the-following-a-dirty-read-and-b-phantoms-脏读取-幻象" class="headerlink" title="7.8(Q) Define the violations caused by each of the following: (a) dirty read, and (b) phantoms. 脏读取 幻象"></a>7.8(Q) Define the violations caused by each of the following: (a) dirty read, and (b) phantoms. 脏读取 幻象</h2><p><img src="/images/database_images/202411172050448.png" alt="image-20241117205037317"></p>
+<p>脏读指读取到其他事务正在处理的未提交数据</p>
+<p><img src="/images/database_images/202411172050534.png" alt="image-20241117205046400"></p>
+<p>不可重复读是指并发更新时，另一个事务前后查询相同数据时的数据不符合预期</p>
+<p><img src="/images/database_images/202411172051442.png" alt="image-20241117205100291"></p>
+<p>幻读是指并发新增、删除这种会产生数量变化的操作时，另一个事务查询相同数据时的不符合预期</p>
+<ul>
+<li>A dirty read occurs if one transaction reads data that has been modified by another transaction.</li>
+<li>This results in a violation of transaction isolation, if the transaction that modified the data is rolled back.</li>
+<li>A phantom read occurs when a transaction retrieves a set of rows twice</li>
+<li>and new rows are inserted or removed from that set by another transaction that is committed in between.</li>
+</ul>
+<h1 id="8-File-organisation"><a href="#8-File-organisation" class="headerlink" title="8 File organisation"></a>8 File organisation</h1><h2 id="8-1-Data-storage"><a href="#8-1-Data-storage" class="headerlink" title="8.1 Data storage"></a>8.1 Data storage</h2><ul>
+<li>DBMS has to store data somewhere</li>
+<li>Choices:<ul>
+<li>Main memory<ul>
+<li>Expensive – compared to secondary and tertiary storage 昂贵</li>
+<li>Fast – in memory operations are fast 快速</li>
+<li>Volatile – not possible to save data from one run to its next 易失</li>
+<li>Used for storing current data (10 GBs) 存储当前数据</li>
+</ul>
+</li>
+<li>Secondary storage (hard disk)<ul>
+<li>Less expensive – compared to main memory</li>
+<li>Slower – compared to main memory, faster compared to tapes</li>
+<li>Persistent – data from one run can be saved to the disk to be used in the next run 持续的</li>
+<li>Usedforstoring the database (10 TBs, 2016)</li>
+</ul>
+</li>
+<li>Tertiary storage (tapes)<ul>
+<li>Cheapest</li>
+<li>Slowest – sequential data access</li>
+<li>Used for data archives (Sony 185 TB tapes, 2014) 用于数据归档</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="8-2-Q-Two-differences-between-primary-and-secondary-storage"><a href="#8-2-Q-Two-differences-between-primary-and-secondary-storage" class="headerlink" title="8.2(Q) Two differences between primary and secondary storage"></a>8.2(Q) Two differences between primary and secondary storage</h2><ul>
+<li>Primary storage is the computer’s main memory and stores data temporarily.Secondary storage is external memory and saves data permanently</li>
+<li>Data stored in primary storage can be directly accessed by the CPU, which cannot be accessed in secondary storage</li>
+</ul>
+<h2 id="8-3-DBMS-Stores-Data-on-Hard-Disks"><a href="#8-3-DBMS-Stores-Data-on-Hard-Disks" class="headerlink" title="8.3 DBMS Stores Data on Hard Disks"></a>8.3 DBMS Stores Data on Hard Disks</h2><ul>
+<li>This means that data needs to be<ul>
+<li>read from the hard disk into memory (RAM)</li>
+<li>written from the memory onto the hard disk</li>
+</ul>
+</li>
+<li>Because I&#x2F;O disk operations are slow query performance depends upon how data is stored on hard disks 由于磁盘I&#x2F;O操作较慢，查询性能取决于数据以何种方式存储在硬盘上</li>
+<li>The lowest component of the DBMS performs storage management activities DBMS的最底层组件执行存储管理活动</li>
+<li>Other DBMS components need not know how these low level activities are performed 其它DBMS组件不需要知道这些低级活动是如何执行的</li>
+</ul>
+<h2 id="8-4-Basics-of-Data-Storage-on-Hard-Disk"><a href="#8-4-Basics-of-Data-Storage-on-Hard-Disk" class="headerlink" title="8.4 Basics of Data Storage on Hard Disk"></a>8.4 Basics of Data Storage on Hard Disk</h2><ul>
+<li><p>A disk is organized into a number of blocks or pages</p>
+<p><img src="/images/database_images/202411172052280.png" alt="image-20241117205253224"></p>
+</li>
+</ul>
+<p>A. Track 磁道  B. Sector  C. Block  D. Cluster  E. Page</p>
+<ul>
+<li>A page is the unit of exchange between the disk and the main memory 页是磁盘和主存交换的单位</li>
+<li>A collection of pages is known as a file 页面的集合称为文件</li>
+<li>DBMS stores data in one or more files on the hard disk DBMS将数据存储在硬盘的一个或多个文件中</li>
+</ul>
+<h2 id="8-5-Q-Two-techniques-for-allocating-file-blocks-on-a-disk-in-detail"><a href="#8-5-Q-Two-techniques-for-allocating-file-blocks-on-a-disk-in-detail" class="headerlink" title="8.5(Q) Two techniques for allocating file blocks on a disk in detail"></a>8.5(Q) Two techniques for allocating file blocks on a disk in detail</h2><p>Two techniques for allocating file blocks on disk are: contiguous file allocation and linked file allocation. 连续文件分配和链接文件分配</p>
+<ul>
+<li>In contiguous file allocation, the block is allocated in such a manner that all the allocated blocks in the hard disk are adjacent. Assuming a file needs n number of blocks in the disk and the file begins with a block at position x, the next blocks to be assigned to it will be x + 1, x + 2, x + 3, …, x + n–1 so that they are in a contiguous manner.</li>
+<li>Inlinked file allocation, the file which we store on the hard disk is stored in a scattered manner according to the space available on the hard disk. To rememberthe blocks that belong to the same file, the linked file allocation technique uses pointers to point to the next block of the same file. Therefore, along with the entry of each file each block also stores the pointer to the next block.</li>
+</ul>
+<h2 id="8-6-Indexing"><a href="#8-6-Indexing" class="headerlink" title="8.6 Indexing"></a>8.6 Indexing</h2><ul>
+<li>Index – a data structure that allows the DBMS to locate particular records in a file more quickly<ul>
+<li>Very similar to the index at the end of a book to locate various topics covered in the book</li>
+</ul>
+</li>
+<li>Types of Index<ul>
+<li>Primary index – one primary index per file</li>
+<li>Clustering index – one clustering index per file– data file is ordered on a non-key field and the index file is built on that non-key field</li>
+<li>Secondary index – many secondary indexes per file</li>
+</ul>
+</li>
+<li>Sparse index – has only some of the search key values in the file</li>
+<li>Dense index – has an index corresponding to every search key value in the file</li>
+</ul>
+<h2 id="8-7-Explain-how-double-buffering-improves-block-access-time"><a href="#8-7-Explain-how-double-buffering-improves-block-access-time" class="headerlink" title="8.7 Explain how double buffering improves block access time"></a>8.7 Explain how double buffering improves block access time</h2><p>With double buffers, when the CPU is processing the current block of data in buffer 1, it can also retrieve the next block into buffer 2 at the same time. When processing of buffer 1 is done, the CPU can then move on to the next block in buffer 2 immediately without waiting.</p>
+<h1 id="9-Database-security"><a href="#9-Database-security" class="headerlink" title="9 Database security"></a>9 Database security</h1><h2 id="9-1-CommonSecurity-Measures"><a href="#9-1-CommonSecurity-Measures" class="headerlink" title="9.1 CommonSecurity Measures"></a>9.1 CommonSecurity Measures</h2><ul>
+<li>Authorization – privileges, views</li>
+<li>Authentication – passwords</li>
+<li>Verification – digital signatures&#x2F;certificates</li>
+<li>Encryption – public key &#x2F; private key, secure sockets</li>
+<li>Integrity – IEF (Integrity Enhancement Features), transactions</li>
+<li>Backups – offsite backups, journaling, log files</li>
+<li>RAID(Redundant Array of Independent Discs) discs – data duplication, “hot swap” discs</li>
+<li>Physical – data centres, alarms, guards, UPS</li>
+<li>Logical – firewalls, net proxies</li>
+</ul>
+<h2 id="9-2-Q-What-is-label-security-How-does-an-administrator-enforce-it"><a href="#9-2-Q-What-is-label-security-How-does-an-administrator-enforce-it" class="headerlink" title="9.2(Q) What is label security? How does an administrator enforce it?"></a>9.2(Q) What is label security? How does an administrator enforce it?</h2><p>Rows of data are labelled to indicate the level and nature of their sensitivity. A label on a row of data specifies the sensitivity of the information in the row and explicitly defines the criteria that must be met for a user to access that row.  An administrator enforces label security by implementing the following process:</p>
+<ul>
+<li>Create the label security policy container 创建标签安全策略容器</li>
+<li>Create data labels for the label security policy 为标签数据安全创建数据标签</li>
+<li>Authorise users for the label security policy 授权用户使用标签安全策略</li>
+<li>Grant privileges to users and trusted stored program units 授予用户和受信用的储存进程单元特权</li>
+</ul>
+<h2 id="9-3-Q-What-is-flow-control-as-a-security-measure-What-types-of-flow-control-exists"><a href="#9-3-Q-What-is-flow-control-as-a-security-measure-What-types-of-flow-control-exists" class="headerlink" title="9.3(Q) What is flow control as a security measure? What types of flow control exists?"></a>9.3(Q) What is flow control as a security measure? What types of flow control exists?</h2><p>Flow controls, most commonly, use a concept of security classes, where transmission of data is blocked if the receiver has a security level lower than the sender. There are two types of flow control:</p>
+<p>流控制通常使用安全类的概念，如果接收方的安全级别低于发送方，则数据传输将被阻止</p>
+<ul>
+<li>Explicit flows, consequences of assignments 显式流，赋值的结果</li>
+<li>Implicit flows, generated by conditions 隐式流，由条件产生</li>
+</ul>
+<h1 id="10-DB-Web-technologies"><a href="#10-DB-Web-technologies" class="headerlink" title="10 DB Web technologies"></a>10 DB Web technologies</h1><h2 id="10-1-Basics-of-WWW"><a href="#10-1-Basics-of-WWW" class="headerlink" title="10.1 Basics of WWW"></a>10.1 Basics of WWW</h2><ul>
+<li>The Web is a very large client-server system<ul>
+<li>Connected through routers and switches</li>
+<li>Communicating with TCP&#x2F;IP protocol</li>
+<li>With no centralised control 没有集中控制</li>
+</ul>
+</li>
+<li>Servers publish pages at URLs</li>
+<li>Clients request pages by specifying the URLs</li>
+<li>Pages are transferred on the Web using HTTP protocol</li>
+<li>Each HTTP interaction is independent 每个HTTP交互都是独立的<ul>
+<li>No concept of a state or session 没有状态和会话的概念</li>
+</ul>
+</li>
+</ul>
+<h2 id="10-2-1990’s-Client-Server-DBMS-Architecture"><a href="#10-2-1990’s-Client-Server-DBMS-Architecture" class="headerlink" title="10.2 1990’s Client-Server DBMS Architecture"></a>10.2 1990’s Client-Server DBMS Architecture</h2><ul>
+<li>Example: A high street travel agency</li>
+</ul>
+<p><img src="/images/database_images/202411172055660.png" alt="image-20241117205524589"></p>
+<ul>
+<li>Application&#x2F;business code on client machine– “fat client” 胖客户机</li>
+<li>Proprietary software– expensive to maintain &amp; update</li>
+</ul>
+<h2 id="10-3-From-1995-Three-Tier-Architecture"><a href="#10-3-From-1995-Three-Tier-Architecture" class="headerlink" title="10.3 From 1995: Three-Tier Architecture"></a>10.3 From 1995: Three-Tier Architecture</h2><ul>
+<li>Example: A web-based bookstore. e.g., amazon.co.uk</li>
+</ul>
+<p><img src="/images/database_images/202411172056240.png" alt="image-20241117205609168"></p>
+<ul>
+<li>All application&#x2F;business code off client, onto server 所有应用&#x2F;商业代码从客户机转到应用服务器</li>
+</ul>
+<h2 id="10-4-Characteristics-of-Three-Tier-Architecture"><a href="#10-4-Characteristics-of-Three-Tier-Architecture" class="headerlink" title="10.4 Characteristics of Three-Tier Architecture"></a>10.4 Characteristics of Three-Tier Architecture</h2><ul>
+<li>Advantages:<ul>
+<li>Platform independence – web browsers for every PC 平台独立性</li>
+<li>Cheap graphical user interface – potential for innovation 廉价GUI界面</li>
+<li>Simplicity – easier to upgrade &amp; scale 简化</li>
+</ul>
+</li>
+<li>Disadvantages:<ul>
+<li>Costly to maintain server – poor development tools</li>
+<li>Less secure (hackers, etc.)</li>
+<li>Less reliable (packet loss)</li>
+<li>Stateless – no built-in support for transactions 无状态，没有内置事务支持</li>
+<li>Scaling limitations – size of data and No. of users 扩展限制</li>
+</ul>
+</li>
+</ul>
+<h2 id="10-5-University-Architecture"><a href="#10-5-University-Architecture" class="headerlink" title="10.5 University Architecture"></a>10.5 University Architecture</h2><p><img src="/images/database_images/202411172056584.png" alt="image-20241117205642510"></p>
+<h2 id="10-6-Q-Discuss-three-types-of-arrays-in-PHP"><a href="#10-6-Q-Discuss-three-types-of-arrays-in-PHP" class="headerlink" title="10.6(Q) Discuss three types of arrays in PHP"></a>10.6(Q) Discuss three types of arrays in PHP</h2><p>An array in PHP is actually an ordered map. A map is a type that associates values to keys. This type is optimised for several difference users; it can be treated as an array, a list, a hash table, a dictionary, etc. In PHP, the three types of arrays are: (a) indexed arrays, (b) associative arrays, and (c) multidimensional arrays.</p>
+<ul>
+<li>An indexed array is an array with a numeric key. It stores each array element with a numeric index.</li>
+<li>An associative array is an array where each key has its own specific value. The keys assigned to values can be arbitrary and user defined strings.</li>
+<li>A multidimensional array is an array containing one or more arrays within itself. Each element in the array can also be an array and each element in the sub-array can be an array or further contain array within itself.</li>
+</ul>
+<h2 id="10-7-Q-What-are-PHP-auto-global-variables"><a href="#10-7-Q-What-are-PHP-auto-global-variables" class="headerlink" title="10.7(Q) What are PHP auto-global-variables?"></a>10.7(Q) What are PHP auto-global-variables?</h2><p>PHP auto-global-variables are built-in variables that are always available in all scopes. Some predefined variables in PHP are super globals, which means that they are always accessible, regardless of scope, and you can access them from any function, class or file without having to do anything special.</p>
+<h1 id="11-NoSQL"><a href="#11-NoSQL" class="headerlink" title="11. NoSQL"></a>11. NoSQL</h1><h2 id="11-1-Relational-V-S-NoSQL"><a href="#11-1-Relational-V-S-NoSQL" class="headerlink" title="11.1 Relational V.S. NoSQL"></a>11.1 Relational V.S. NoSQL</h2><p>NoSQL (“Not Only SQL”)</p>
+<ul>
+<li>Uses Clusters 使用集群:<ul>
+<li>Distribute the Data via Replication &amp; Sharding 通过复制和分片分发数据</li>
+<li>Distribute the Processing Across Multiple Nodes in a Cluster 将处理分布在集群的多个集点上</li>
+</ul>
+</li>
+<li>Uses Replication to provide 使用复制提供<ul>
+<li>Redundancy 冗余</li>
+<li>High Availability 高可用性</li>
+<li>Parallel Processing 并行处理</li>
+</ul>
+</li>
+<li>VERY Horizontally scalable 非常水平扩展</li>
+</ul>
+<p><img src="/images/database_images/202411172057685.png" alt="image-20241117205748600"></p>
+<h2 id="11-2-CAP-theorem"><a href="#11-2-CAP-theorem" class="headerlink" title="11.2 CAP theorem"></a>11.2 CAP theorem</h2><p>In theoretical computer science, the CAP theorem states that any distributed data store can provide only two of the following three guarantees: consistency, availability, and partition tolerance.</p>
+<p>Consistency guarantees that every read receives the most recent write or an error.</p>
+<p>Availability guarantees that every request receives a non-error response, without the guarantee that it contains the most recent write.</p>
+<p>Partition tolerance guarantees that the system continues to operate despite an arbitrary number of messages being dropped or delayed by the network between nodes.</p>
+<h2 id="11-3-Q-Which-of-the-three-properties-consistency-availability-partition-tolerance-are-most-important-in-NoSQL-systems"><a href="#11-3-Q-Which-of-the-three-properties-consistency-availability-partition-tolerance-are-most-important-in-NoSQL-systems" class="headerlink" title="11.3(Q) Which of the three properties (consistency, availability, partition tolerance) are most important in NoSQL systems?"></a>11.3(Q) Which of the three properties (consistency, availability, partition tolerance) are most important in NoSQL systems?</h2><p>In a networked NoSQL system, partition tolerance is a must. Network partitions and dropped or delayed messages are a fact in these networked shared-data systems and it must be handled appropriately.</p>
+<p>Consequently, system designers must choose between consistency and availability. A NoSQL system that prioritises availability over consistency can respond with possibly stale data.</p>
+<p>In contrast, a NoSQL system that prioritises consistency over availability can respond with the latest updated data. [1 mark] The system can be distributed across multiple servers and is designed to operate reliably even in the presence of network partitions.</p>
+<p>So, the partition tolerance and consistency properties are most important in NoSQL systems that require immediate consistency.</p>
+<h2 id="11-4-Q-What-are-the-similarities-and-differences-between-consistency-in-CAP-versus-consistency-in-ACID"><a href="#11-4-Q-What-are-the-similarities-and-differences-between-consistency-in-CAP-versus-consistency-in-ACID" class="headerlink" title="11.4(Q)  What are the similarities and differences between consistency in CAP versus consistency in ACID?"></a>11.4(Q)  What are the similarities and differences between consistency in CAP versus consistency in ACID?</h2><p>In a distributed database system, the term consistency implies that different nodes or servers respond with the same data to the same request. 在分布式数据库系统中，一致性意味着不同的节点或服务器对相同的请求使用相同的数据进行响应。</p>
+<p>In a relational database system, the term consistency implies that the database enforces rules about its f ields and the relationship between fields. 在关系数据库系统中，术语一致性意味着数据库强制执行关于其字段和字段之间关系的规则。</p>
+<h1 id="12-Extensible-Markup-Language-可拓展标记语言"><a href="#12-Extensible-Markup-Language-可拓展标记语言" class="headerlink" title="12 Extensible Markup Language 可拓展标记语言"></a>12 Extensible Markup Language 可拓展标记语言</h1><h2 id="12-1-Structured-Semi-structured-and-Unstructured-Data"><a href="#12-1-Structured-Semi-structured-and-Unstructured-Data" class="headerlink" title="12.1 Structured, Semi-structured, and Unstructured Data"></a>12.1 Structured, Semi-structured, and Unstructured Data</h2><ul>
+<li>Structured data<ul>
+<li>Represented in a strict format (schema)</li>
+<li>Example: information stored in databases</li>
+</ul>
+</li>
+<li>Semi-structured data<ul>
+<li>Has a certain structure</li>
+<li>Not all information collected will have identical structure</li>
+</ul>
+</li>
+<li>Unstructured data<ul>
+<li>Limited indication of the of data document that contains information embedded within it</li>
+</ul>
+</li>
+</ul>
+<h2 id="12-2-Q-What-are-the-differences-between-structured-semi-structured-and-unstructured-data"><a href="#12-2-Q-What-are-the-differences-between-structured-semi-structured-and-unstructured-data" class="headerlink" title="12.2(Q) What are the differences between structured, semi-structured and unstructured data?"></a>12.2(Q) What are the differences between structured, semi-structured and unstructured data?</h2><ul>
+<li>Structured data can be displayed in rows, columns and relational databases. Unstructured data cannot be displayed in rows, columns and relational databases. 结构化数据可以以行、列和关系数据库的形式显示.不能在行、列和关系数据库中显示非结构化数据。</li>
+<li>Structured data is comprised of numbers, dates and strings. Unstructured data is comprised of images, audio, video, word processing files, emails, spreadsheets, etc. 结构化数据由数字、日期和字符串组成。非结构化数据包括图像、音频、视频、文字处理文件、电子邮件、电子表格等。</li>
+<li>Incontrast to structured data, which requires less storage, unstructured data requires more storage. Also, it is more difficult to manage and protect unstructured data with legacy solutions. 结构化数据需要较少的存储空间，而非结构化数据需要更多的存储空间。此外，使用遗留解决方案管理和保护非结构化数据更加困难。</li>
+<li>Semi-structured data is information that doesn’t consist of structured data but still has some structure to it. It includes key-value stores and graph databases. 半结构化数据是指不包含结构化数据但仍具有某种结构的信息。它包括键值存储和图形数据库</li>
+</ul>
+<h2 id="12-3-XML-Hierarchical-Tree-Data-Model"><a href="#12-3-XML-Hierarchical-Tree-Data-Model" class="headerlink" title="12.3 XML Hierarchical (Tree) Data Model"></a>12.3 XML Hierarchical (Tree) Data Model</h2><ul>
+<li>Elements and attributes</li>
+<li>Complex elements</li>
+<li>Simple elements</li>
+<li>XMLtagnames</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://example.com">FlySheepZHAO</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2024/11/17/database/">http://example.com/2024/11/17/database/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="http://example.com" target="_blank">FlySheep の Blog</a>！</span></div></div><div class="tag_share"><div class="post-share"><div class="social-share" data-image="/img/splat.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2024/11/17/hello-world/" title="Hello World"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">Hello World</div></div><div class="info-2"><div class="info-item-1">前言 这是我的第一篇个人博客，终于成功学会并搭建起了属于我个人的博客网站，我将在这里分享我个人计算机学习道路上的笔记与心得，或许还有一些生活碎片 感谢 攻城狮杰森快速搭建个人博客——保姆级教程 Cat BayiHexo教程，看这一篇就够了- How to系列 JerryButterfly - A Simple and Card UI Design theme for Hexo 呆萌宝儿姐PicGo一条龙：下载、安装、配置gitee、配置typora  </div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/splat.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">FlySheepZHAO</div><div class="author-info-description"></div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">2</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Flysheep1223"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-Database-database-users"><span class="toc-number">1.</span> <span class="toc-text">1 Database &amp; database users</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-Definitions"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 Definitions</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-What-is-a-database"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 What is a database</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3-Four-main-types-of-actions-involve-databases-DCMS"><span class="toc-number">1.3.</span> <span class="toc-text">1.3  Four main types of actions involve databases (DCMS)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-4-Responsibilities-of-the-database-administrator-and-the-database-designer"><span class="toc-number">1.4.</span> <span class="toc-text">1.4 Responsibilities of the database administrator and the database designer</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-5-Four-main-characteristics-of-the-database-approach"><span class="toc-number">1.5.</span> <span class="toc-text">1.5 Four main characteristics of the database approach</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-SQL"><span class="toc-number">2.</span> <span class="toc-text">2 SQL</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-SQL-Structured-Query-Language"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 SQL - Structured Query Language</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-SQL-Components-DDL-DCL-DML"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 SQL Components: DDL, DCL &amp; DML</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-SQL-Aggregate-Functions-%E8%81%9A%E5%90%88%E5%87%BD%E6%95%B0"><span class="toc-number">2.3.</span> <span class="toc-text">2.3 SQL Aggregate Functions 聚合函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4-Set-Operations-in-SQL-%E9%9B%86%E5%90%88%E6%93%8D%E4%BD%9C"><span class="toc-number">2.4.</span> <span class="toc-text">2.4 Set Operations in SQL 集合操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-5-Q-Three-differences-between-a-database-schema-and-a-database-state"><span class="toc-number">2.5.</span> <span class="toc-text">2.5(Q) Three differences between a database schema and a database state</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-6-Q-The-reasons-for-logical-data-independence-is-harder-to-achieve-compared-to-physical-data-independence-%E9%80%BB%E8%BE%91%E6%95%B0%E6%8D%AE%E7%8B%AC%E7%AB%8B%E6%80%A7%E6%AF%94%E7%89%A9%E7%90%86%E6%95%B0%E6%8D%AE%E7%8B%AC%E7%AB%8B%E6%80%A7%E6%9B%B4%E9%9A%BE%E5%AE%9E%E7%8E%B0%E7%9A%84%E5%8E%9F%E5%9B%A0"><span class="toc-number">2.6.</span> <span class="toc-text">2.6(Q) The reasons for logical data independence is harder to achieve compared to physical data independence 逻辑数据独立性比物理数据独立性更难实现的原因</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-Relational-Model-%EF%BC%88%E9%80%BB%E8%BE%91%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%EF%BC%89"><span class="toc-number">3.</span> <span class="toc-text">3 Relational Model （逻辑数据模型）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-Database-Design"><span class="toc-number">3.1.</span> <span class="toc-text">3.1 Database Design</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-Phases-of-database-design"><span class="toc-number">3.2.</span> <span class="toc-text">3.2 Phases of database design</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-ER-Modelling-%EF%BC%88%E6%A6%82%E5%BF%B5%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%EF%BC%89"><span class="toc-number">3.3.</span> <span class="toc-text">3.3 ER Modelling （概念数据模型）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-4-Q-The-difference-between-an-attribute-and-a-value-set"><span class="toc-number">3.4.</span> <span class="toc-text">3.4(Q) The difference between an attribute and a value set</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-Enhanced-Entity-Relationship-Model-EER"><span class="toc-number">4.</span> <span class="toc-text">4 Enhanced Entity-Relationship Model (EER)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-Structural-Constraints-%E7%BB%93%E6%9E%84%E7%BA%A6%E6%9D%9F"><span class="toc-number">4.1.</span> <span class="toc-text">4.1 Structural Constraints 结构约束</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-EER-Modeling"><span class="toc-number">4.2.</span> <span class="toc-text">4.2 EER Modeling</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-3-Step-by-Step-Procedure-for-Conceptual-design"><span class="toc-number">4.3.</span> <span class="toc-text">4.3 Step-by-Step Procedure for Conceptual design</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-4-Q-Brief-explantation-on-an-ontology-and-a-database-schema-and-discuss-one-similarity-between-the-two-%E7%AE%80%E7%9F%AD%E4%BB%8B%E7%BB%8D%E6%9C%AC%E4%BD%93%E4%B8%8E-database-schema%EF%BC%8C%E5%B9%B6%E4%B8%94%E8%AE%A8%E8%AE%BA%E7%9B%B8%E4%BC%BC%E4%B9%8B%E5%A4%84"><span class="toc-number">4.4.</span> <span class="toc-text">4.4(Q) Brief explantation on an ontology and a database schema, and discuss one similarity between the two 简短介绍本体与 database schema，并且讨论相似之处</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-Normalisation"><span class="toc-number">5.</span> <span class="toc-text">5 Normalisation</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#5-1-Data-Redundancy"><span class="toc-number">5.1.</span> <span class="toc-text">5.1 Data Redundancy</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-2-The-reasons-of-why-the-insertion-deletion-and-modification-anomalies-are-considered-bad"><span class="toc-number">5.2.</span> <span class="toc-text">5.2 The reasons of why the insertion, deletion, and modification anomalies are considered bad</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-3-The-Process-of-Normalization"><span class="toc-number">5.3.</span> <span class="toc-text">5.3 The Process of Normalization</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-4-%E6%9C%89%E5%85%B3%E8%A7%84%E8%8C%83%E5%8C%96%E7%9A%84%E4%B8%80%E4%B8%AA%E5%AE%8C%E6%95%B4%E4%BE%8B%E5%AD%90%EF%BC%9A"><span class="toc-number">5.4.</span> <span class="toc-text">5.4 有关规范化的一个完整例子：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-5-Q-The-problem-of-spurious-and-how-to-prevent-it-%E4%BC%AA%E5%85%83%E7%BB%84%E7%9A%84%E9%97%AE%E9%A2%98%E4%B8%8E%E5%A6%82%E4%BD%95%E9%81%BF%E5%85%8D"><span class="toc-number">5.5.</span> <span class="toc-text">5.5(Q) The problem of spurious and how to prevent it 伪元组的问题与如何避免</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-6-Q-The-reasons-for-NULLs-in-a-relation-be-avioded-as-much-as-possible"><span class="toc-number">5.6.</span> <span class="toc-text">5.6(Q) The reasons for NULLs in a relation be avioded as much as possible</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-Access-Control"><span class="toc-number">6.</span> <span class="toc-text">6 Access Control</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#6-1-The-Importance-of-Views-Privileges"><span class="toc-number">6.1.</span> <span class="toc-text">6.1 The Importance of Views &amp; Privileges</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-2-The-meant-of-granting-and-revoking-a-priviledge"><span class="toc-number">6.2.</span> <span class="toc-text">6.2 The meant of granting and revoking a priviledge</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-3-SQL%E2%80%99s-Access-Control-Model"><span class="toc-number">6.3.</span> <span class="toc-text">6.3 SQL’s Access Control Model</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-4-Q-The-difference-between-discretionary-and-mandatory-access-control-%E8%87%AA%E7%94%B1%E8%A3%81%E9%87%8F%E8%AE%BF%E9%97%AE%E6%8E%A7%E5%88%B6%E5%92%8C%E5%BC%BA%E5%88%B6%E8%AE%BF%E9%97%AE%E6%8E%A7%E5%88%B6%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">6.4.</span> <span class="toc-text">6.4(Q) The difference between discretionary and mandatory access control 自由裁量访问控制和强制访问控制的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-5-Q-The-meant-of-row-level-access-control"><span class="toc-number">6.5.</span> <span class="toc-text">6.5(Q) The meant of row-level access control</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-Transaction-Management"><span class="toc-number">7.</span> <span class="toc-text">7 Transaction Management</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#7-1-Transaction-Management-Overview"><span class="toc-number">7.1.</span> <span class="toc-text">7.1 Transaction Management Overview</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-2-The-%E2%80%9CACID%E2%80%9D-Requirements-For-a-Transaction"><span class="toc-number">7.2.</span> <span class="toc-text">7.2 The “ACID” Requirements For a Transaction</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-3-Q-Discuss-the-atomicity-durability-isolation-and-consistency-preservation-properties-of-a-database-transaction"><span class="toc-number">7.3.</span> <span class="toc-text">7.3(Q)  Discuss the atomicity, durability, isolation, and consistency preservation properties of a database transaction.</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-4-Concurrent-Transections-The-Lost-Update-Problem"><span class="toc-number">7.4.</span> <span class="toc-text">7.4 Concurrent Transections - The Lost Update Problem</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-5-Serialising-Transactions-%E8%BF%9E%E8%BD%BD%E4%BA%8B%E7%89%A9"><span class="toc-number">7.5.</span> <span class="toc-text">7.5 Serialising Transactions 连载事物</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-6-Q-What-is-a-serial-schedule-What-is-a-serialisable-schedule-Why-is-a-serial-schedule-considered-correct-Why-is-a-serialisable-schedule-considered-correct"><span class="toc-number">7.6.</span> <span class="toc-text">7.6(Q) What is a serial schedule? What is a serialisable schedule? Why is a serial schedule considered correct? Why is a serialisable schedule considered correct?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-7-Q-Discuss-the-actions-taken-by-the-read-item-modify-item-and-write-item-operations-on-adatabase"><span class="toc-number">7.7.</span> <span class="toc-text">7.7(Q) Discuss the actions taken by the read item, modify item and write item operations on adatabase</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-8-Q-Define-the-violations-caused-by-each-of-the-following-a-dirty-read-and-b-phantoms-%E8%84%8F%E8%AF%BB%E5%8F%96-%E5%B9%BB%E8%B1%A1"><span class="toc-number">7.8.</span> <span class="toc-text">7.8(Q) Define the violations caused by each of the following: (a) dirty read, and (b) phantoms. 脏读取 幻象</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#8-File-organisation"><span class="toc-number">8.</span> <span class="toc-text">8 File organisation</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#8-1-Data-storage"><span class="toc-number">8.1.</span> <span class="toc-text">8.1 Data storage</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-2-Q-Two-differences-between-primary-and-secondary-storage"><span class="toc-number">8.2.</span> <span class="toc-text">8.2(Q) Two differences between primary and secondary storage</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-3-DBMS-Stores-Data-on-Hard-Disks"><span class="toc-number">8.3.</span> <span class="toc-text">8.3 DBMS Stores Data on Hard Disks</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-4-Basics-of-Data-Storage-on-Hard-Disk"><span class="toc-number">8.4.</span> <span class="toc-text">8.4 Basics of Data Storage on Hard Disk</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-5-Q-Two-techniques-for-allocating-file-blocks-on-a-disk-in-detail"><span class="toc-number">8.5.</span> <span class="toc-text">8.5(Q) Two techniques for allocating file blocks on a disk in detail</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-6-Indexing"><span class="toc-number">8.6.</span> <span class="toc-text">8.6 Indexing</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-7-Explain-how-double-buffering-improves-block-access-time"><span class="toc-number">8.7.</span> <span class="toc-text">8.7 Explain how double buffering improves block access time</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#9-Database-security"><span class="toc-number">9.</span> <span class="toc-text">9 Database security</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#9-1-CommonSecurity-Measures"><span class="toc-number">9.1.</span> <span class="toc-text">9.1 CommonSecurity Measures</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-2-Q-What-is-label-security-How-does-an-administrator-enforce-it"><span class="toc-number">9.2.</span> <span class="toc-text">9.2(Q) What is label security? How does an administrator enforce it?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-3-Q-What-is-flow-control-as-a-security-measure-What-types-of-flow-control-exists"><span class="toc-number">9.3.</span> <span class="toc-text">9.3(Q) What is flow control as a security measure? What types of flow control exists?</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#10-DB-Web-technologies"><span class="toc-number">10.</span> <span class="toc-text">10 DB Web technologies</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#10-1-Basics-of-WWW"><span class="toc-number">10.1.</span> <span class="toc-text">10.1 Basics of WWW</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-2-1990%E2%80%99s-Client-Server-DBMS-Architecture"><span class="toc-number">10.2.</span> <span class="toc-text">10.2 1990’s Client-Server DBMS Architecture</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-3-From-1995-Three-Tier-Architecture"><span class="toc-number">10.3.</span> <span class="toc-text">10.3 From 1995: Three-Tier Architecture</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-4-Characteristics-of-Three-Tier-Architecture"><span class="toc-number">10.4.</span> <span class="toc-text">10.4 Characteristics of Three-Tier Architecture</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-5-University-Architecture"><span class="toc-number">10.5.</span> <span class="toc-text">10.5 University Architecture</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-6-Q-Discuss-three-types-of-arrays-in-PHP"><span class="toc-number">10.6.</span> <span class="toc-text">10.6(Q) Discuss three types of arrays in PHP</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-7-Q-What-are-PHP-auto-global-variables"><span class="toc-number">10.7.</span> <span class="toc-text">10.7(Q) What are PHP auto-global-variables?</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#11-NoSQL"><span class="toc-number">11.</span> <span class="toc-text">11. NoSQL</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#11-1-Relational-V-S-NoSQL"><span class="toc-number">11.1.</span> <span class="toc-text">11.1 Relational V.S. NoSQL</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#11-2-CAP-theorem"><span class="toc-number">11.2.</span> <span class="toc-text">11.2 CAP theorem</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#11-3-Q-Which-of-the-three-properties-consistency-availability-partition-tolerance-are-most-important-in-NoSQL-systems"><span class="toc-number">11.3.</span> <span class="toc-text">11.3(Q) Which of the three properties (consistency, availability, partition tolerance) are most important in NoSQL systems?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#11-4-Q-What-are-the-similarities-and-differences-between-consistency-in-CAP-versus-consistency-in-ACID"><span class="toc-number">11.4.</span> <span class="toc-text">11.4(Q)  What are the similarities and differences between consistency in CAP versus consistency in ACID?</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#12-Extensible-Markup-Language-%E5%8F%AF%E6%8B%93%E5%B1%95%E6%A0%87%E8%AE%B0%E8%AF%AD%E8%A8%80"><span class="toc-number">12.</span> <span class="toc-text">12 Extensible Markup Language 可拓展标记语言</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#12-1-Structured-Semi-structured-and-Unstructured-Data"><span class="toc-number">12.1.</span> <span class="toc-text">12.1 Structured, Semi-structured, and Unstructured Data</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#12-2-Q-What-are-the-differences-between-structured-semi-structured-and-unstructured-data"><span class="toc-number">12.2.</span> <span class="toc-text">12.2(Q) What are the differences between structured, semi-structured and unstructured data?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#12-3-XML-Hierarchical-Tree-Data-Model"><span class="toc-number">12.3.</span> <span class="toc-text">12.3 XML Hierarchical (Tree) Data Model</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/11/17/database/" title="Principles and Practice of Database Systems">Principles and Practice of Database Systems</a><time datetime="2024-11-16T16:00:00.000Z" title="发表于 2024-11-17 00:00:00">2024-11-17</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/11/17/hello-world/" title="Hello World">Hello World</a><time datetime="2024-11-16T16:00:00.000Z" title="发表于 2024-11-17 00:00:00">2024-11-17</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(/img/seaside.jpg);"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2024 By FlySheepZHAO</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
